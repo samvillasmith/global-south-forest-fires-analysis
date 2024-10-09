@@ -47,7 +47,9 @@ Each notebook contains detailed comments and explanations to guide you through t
 - Scikit-learn
 
 ## Author
-[Your Name]
+Samuel Villa-Smith
+PhD Student
+University of the Cumberlands
 
 ## Acknowledgements
 This project uses the Algerian Forest Fires dataset, which we gratefully acknowledge.
