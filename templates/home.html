@@ -1,23 +1,107 @@
-<html>
-    <body>
-        <div class="login">
-            <h1>Fire Weather Index (FWI) Prediction</h1>
-             <form action="{{url_for('predict_datapoint')}}" method="post">
-                <input type="text" name="Temperature" placeholder="Temperature" required="required" /><br>
-                <input type="text" name="RH" placeholder="RH" required="required" /><br>
-                <input type="text" name="Ws" placeholder="Ws" required="required" /><br>
-                <input type="text" name="Rain" placeholder="Rain" required="required" /><br>
-                <input type="text" name="FFMC" placeholder="FFMC" required="required" /><br>
-                <input type="text" name="DMC" placeholder="DMC" required="required" /><br>
-                <input type="text" name="ISI" placeholder="ISI" required="required" /><br>
-                <input type="text" name="Classes" placeholder="Classes" required="required" /><br>
-                <input type="text" name="Region" placeholder="Region" required="required" /><br>
- 
-                <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
-            </form>
-            <h2>
-                THE FWI Prediction is {{results}}
-            </h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fire Weather Index (FWI) Prediction</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include custom fonts (optional) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-2xl">
+        <h1 class="text-4xl font-bold mb-10 text-center text-gray-800">Fire Weather Index Prediction</h1>
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Temperature -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="Temperature">Temperature</label>
+                    <div class="relative">
+                        <input type="number" name="Temperature" id="Temperature" placeholder="e.g., 25" required step="any" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- RH -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="RH">Relative Humidity (RH)</label>
+                    <div class="relative">
+                        <input type="number" name="RH" id="RH" placeholder="e.g., 60" required step="any" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- Wind Speed -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="Ws">Wind Speed (Ws)</label>
+                    <div class="relative">
+                        <input type="number" name="Ws" id="Ws" placeholder="e.g., 10" required step="any" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- Rain -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="Rain">Rainfall</label>
+                    <div class="relative">
+                        <input type="number" name="Rain" id="Rain" placeholder="e.g., 0.5" required step="any" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- FFMC -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="FFMC">FFMC</label>
+                    <div class="relative">
+                        <input type="number" name="FFMC" id="FFMC" placeholder="e.g., 85" required step="any" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- DMC -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="DMC">DMC</label>
+                    <div class="relative">
+                        <input type="number" name="DMC" id="DMC" placeholder="e.g., 10" required step="any" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- ISI -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="ISI">ISI</label>
+                    <div class="relative">
+                        <input type="number" name="ISI" id="ISI" placeholder="e.g., 7" required step="any" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- Classes -->
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2" for="Classes">Classes</label>
+                    <div class="relative">
+                        <input type="text" name="Classes" id="Classes" placeholder="e.g., 0 or 1" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- Region -->
+                <div class="md:col-span-2">
+                    <label class="block text-gray-700 font-semibold mb-2" for="Region">Region</label>
+                    <div class="relative">
+                        <input type="text" name="Region" id="Region" placeholder="e.g., 0 or 1" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <!-- Icon omitted for brevity -->
+                    </div>
+                </div>
+                <!-- Submit Button -->
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl">Predict</button>
+                </div>
+            </div>
+        </form>
+        {% if results %}
+        <div class="mt-10 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-lg flex items-center">
+            <!-- Icon and Text -->
+            <div>
+                <p class="font-bold">Prediction Result:</p>
+                <p class="text-lg">{{ results }}</p>
+            </div>
         </div>
-    </body>
+        {% endif %}
+    </div>
+</body>
 </html>

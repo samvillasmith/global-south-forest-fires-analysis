@@ -1,1 +1,92 @@
-<h1>Welcome to the Home Page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Forest Fire Prediction Home</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include custom fonts (optional) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-400 to-blue-500 min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <nav class="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg py-4 shadow-md">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800">FWI Predictor</a>
+            <div>
+                <a href="/" class="text-gray-700 hover:text-gray-900 mx-4">Home</a>
+                <a href="/predictdata" class="text-gray-700 hover:text-gray-900 mx-4">Predict</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl font-bold text-white mb-6">Welcome to the Fire Weather Index Predictor</h1>
+                <p class="text-xl text-white">Leveraging Ridge Regression to predict forest fire risks.</p>
+                <a href="/predictdata" class="mt-8 inline-block bg-white text-green-600 font-semibold py-3 px-6 rounded-full hover:bg-green-50 transition duration-300">Get Started</a>
+            </div>
+
+            <!-- Project Description -->
+            <div class="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg p-8 rounded-2xl shadow-xl">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">About the Project</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    This project focuses on analyzing the Algerian Forest Fires dataset to understand the relationship between climate conditions and forest fire risks. Utilizing Ridge Regression, we aim to predict the Fire Weather Index (FWI) based on various meteorological and environmental factors.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">Dataset Description</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    The dataset contains observations from the Algerian forest regions, recording key weather parameters and fire risk indices over multiple months. It includes features such as temperature, relative humidity, wind speed, rainfall, and various fire weather indices like FFMC, DMC, DC, ISI, BUI, and FWI.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">Research Problem</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    The study aims to predict fire risk based on environmental variables and understand the impact of climate conditions on forest ecosystems in regions prone to wildfires. By analyzing forest fire occurrences in Algeria, we seek to offer insights into how climate change and extreme weather patterns affect wildfire activity globally.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">Regression Techniques Used</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    During our analysis, we explored various regression techniques to find the most effective model for predicting the Fire Weather Index (FWI). After comparing the performance of different models, we settled on using <strong>Ridge Regression</strong> for the deployed model due to its superior performance.
+                </p>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4">
+                    <li>
+                        <strong>Ridge Regression:</strong> Selected as the final model, Ridge Regression provided the best balance between bias and variance, effectively handling multicollinearity among predictors. It achieved a high R<sup>2</sup> score of <strong>0.984</strong> and a low Mean Absolute Error (MAE) of <strong>0.564</strong>.
+                    </li>
+                    <li>
+                        <strong>ElasticNet Regression:</strong> While ElasticNet was considered, it did not perform as well as Ridge Regression for our dataset, with a lower R<sup>2</sup> score and higher MAE.
+                    </li>
+                </ul>
+                <h3 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">Model Performance</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    The Ridge Regression model demonstrated excellent predictive capabilities:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4">
+                    <li><strong>Mean Absolute Error (MAE):</strong> 0.564</li>
+                    <li><strong>R<sup>2</sup> Score:</strong> 0.984</li>
+                </ul>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    These metrics indicate that the model accurately predicts the Fire Weather Index, making it a reliable tool for assessing fire risk.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">Expected Outcomes</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    - Develop a robust predictive model to forecast fire risk based on climate conditions.<br>
+                    - Identify key environmental factors influencing forest fire risks.<br>
+                    - Provide insights for climate change research and inform forest management policies.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">Conclusion</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Through rigorous analysis and model evaluation, we concluded that Ridge Regression offers the best performance for predicting the Fire Weather Index in our dataset. This deployed model can significantly aid in early detection and prevention strategies for forest fires, contributing valuable insights to climate change research and environmental conservation efforts.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg py-6">
+        <div class="container mx-auto px-4 text-center text-gray-700">
+            &copy; 2023 FWI Predictor. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
