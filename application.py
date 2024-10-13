@@ -1,18 +1,15 @@
-import numpy as np
-import pickle
 from flask import Flask, request, render_template
-
+import pickle
+import numpy as np
 application = Flask(__name__)
-
+app = application
 # Load the models
 ridge = pickle.load(open('models/ridge.pkl', 'rb'))
 standard_scaler = pickle.load(open('models/scaler.pkl', 'rb'))
-
-@application.route('/')
+@app.route('/')
 def index():
     return render_template('index.html')
-
-@application.route('/predictdata', methods=['GET', 'POST'])
+@app.route('/predictdata', methods=['GET', 'POST'])
 def predict_datapoint():
     if request.method == "POST":
         Temperature = float(request.form.get('Temperature'))
@@ -24,12 +21,10 @@ def predict_datapoint():
         ISI = float(request.form.get('ISI'))
         Classes = float(request.form.get('Classes'))
         Region = float(request.form.get('Region'))
-
         new_data_scaled = standard_scaler.transform([[Temperature, RH, Ws, Rain, FFMC, DMC, ISI, Classes, Region]])
         result = ridge.predict(new_data_scaled)
         return render_template('home.html', results=result[0])
     else:
         return render_template('home.html')
-
 if __name__ == '__main__':
-    application.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', debug=False)
