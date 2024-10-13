@@ -1,29 +1,28 @@
-from flask import Flask, request, render_template
+import logging
 import pickle
 import numpy as np
-import pandas as pf
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
-import logging
+from flask import Flask, request, render_template
 
+# Configure logging
+logging.basicConfig(filename='/tmp/app.log', level=logging.DEBUG)
+
+# Initialize Flask application
 application = Flask(__name__)
 app = application
 
-# Load the models
-ridge = pickle.load(open('models/ridge.pkl', 'rb'))
-standard_scaler = pickle.load(open('models/scaler.pkl', 'rb'))
-
-
-
-logging.basicConfig(filename='/tmp/app.log', level=logging.DEBUG)
-logging.debug('Starting application')
-
+# Load models
 try:
-    import numpy as np
-    logging.debug('NumPy imported successfully')
-except ImportError as e:
-    logging.error(f'Failed to import NumPy: {str(e)}')
-
-# Rest of your application code...
+    with open('models/ridge.pkl', 'rb') as f:
+        ridge = pickle.load(f)
+    with open('models/scaler.pkl', 'rb') as f:
+        standard_scaler = pickle.load(f)
+    logging.debug('Models loaded successfully')
+except Exception as e:
+    logging.error(f'Failed to load models: {str(e)}')
+    ridge = None
+    standard_scaler = None
 
 @app.route('/')
 def index():
@@ -32,24 +31,26 @@ def index():
 @app.route('/predictdata', methods=['GET', 'POST'])
 def predict_datapoint():
     if request.method == "POST":
-        Temperature = float(request.form.get('Temperature'))
-        RH = float(request.form.get('RH'))
-        Ws = float(request.form.get('Ws'))
-        Rain = float(request.form.get('Rain'))
-        FFMC = float(request.form.get('FFMC'))
-        DMC = float(request.form.get('DMC'))
-        ISI = float(request.form.get('ISI'))
-        Classes = float(request.form.get('Classes'))
-        Region = float(request.form.get('Region'))
-
-        new_data_scaled = standard_scaler.transform([[Temperature, RH, Ws, Rain, FFMC, DMC, ISI, Classes, Region]])
-
-        result = ridge.predict(new_data_scaled)
-
-        return render_template('home.html', results=result[0])
-
+        try:
+            # Extract form data
+            input_data = [
+                float(request.form.get(field))
+                for field in ['Temperature', 'RH', 'Ws', 'Rain', 'FFMC', 'DMC', 'ISI', 'Classes', 'Region']
+            ]
+            
+            # Perform prediction
+            if standard_scaler is not None and ridge is not None:
+                new_data_scaled = standard_scaler.transform([input_data])
+                result = ridge.predict(new_data_scaled)
+                return render_template('home.html', results=result[0])
+            else:
+                logging.error('Models not loaded properly')
+                return render_template('home.html', error="Model prediction failed")
+        except Exception as e:
+            logging.error(f'Prediction error: {str(e)}')
+            return render_template('home.html', error="An error occurred during prediction")
     else:
         return render_template('home.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False) 
+    app.run(host='0.0.0.0', debug=False)
