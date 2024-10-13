@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 import pandas as pf
 from sklearn.preprocessing import StandardScaler
+import logging
 
 application = Flask(__name__)
 app = application
@@ -10,6 +11,19 @@ app = application
 # Load the models
 ridge = pickle.load(open('models/ridge.pkl', 'rb'))
 standard_scaler = pickle.load(open('models/scaler.pkl', 'rb'))
+
+
+
+logging.basicConfig(filename='/tmp/app.log', level=logging.DEBUG)
+logging.debug('Starting application')
+
+try:
+    import numpy as np
+    logging.debug('NumPy imported successfully')
+except ImportError as e:
+    logging.error(f'Failed to import NumPy: {str(e)}')
+
+# Rest of your application code...
 
 @app.route('/')
 def index():
