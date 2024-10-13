@@ -1,26 +1,31 @@
 import logging
-logging.basicConfig(filename='/tmp/application.log', level=logging.DEBUG)
-
+import os
+import sys
 import pickle
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from flask import Flask, request, render_template
 
-logging.debug(f"NumPy version: {np.__version__}")
-logging.debug(f"Pandas version: {pd.__version__}")
-logging.debug(f"Scikit-learn version: {StandardScaler().__class__.__module__}")
+logging.basicConfig(filename='/tmp/application.log', level=logging.DEBUG)
+logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 application = Flask(__name__)
 app = application
 
-# Load the models
 try:
+    logging.info(f"Current working directory: {os.getcwd()}")
+    logging.info(f"Directory contents: {os.listdir()}")
+    logging.info(f"NumPy version: {np.__version__}")
+    logging.info(f"Pandas version: {pd.__version__}")
+    logging.info(f"Scikit-learn version: {StandardScaler().__class__.__module__}")
+
+    # Load the models
     ridge = pickle.load(open('models/ridge.pkl', 'rb'))
     standard_scaler = pickle.load(open('models/scaler.pkl', 'rb'))
-    logging.debug("Models loaded successfully")
+    logging.info("Models loaded successfully")
 except Exception as e:
-    logging.error(f"Failed to load models: {str(e)}")
+    logging.error(f"Error during initialization: {str(e)}")
 
 @app.route('/')
 def index():
@@ -42,7 +47,7 @@ def predict_datapoint():
 
             new_data_scaled = standard_scaler.transform([[Temperature, RH, Ws, Rain, FFMC, DMC, ISI, Classes, Region]])
             result = ridge.predict(new_data_scaled)
-            logging.debug(f"Prediction result: {result[0]}")
+            logging.info(f"Prediction result: {result[0]}")
             return render_template('home.html', results=result[0])
         except Exception as e:
             logging.error(f"Prediction error: {str(e)}")
